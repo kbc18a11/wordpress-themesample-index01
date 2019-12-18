@@ -3,7 +3,7 @@
 /**
  * CSSの読み込み
  */
-function inputscss():void
+function inputscss(): void
 {
     wp_enqueue_style('bootstrap', get_template_directory_uri() . '/css/bootstrap.min.css');
 }
@@ -12,9 +12,32 @@ add_action('wp_enqueue_scripts', 'inputscss');
 /**
  * jsの読み込み
  */
-function inputsjs():void
+function inputsjs(): void
 {
     wp_enqueue_script('myscript', get_template_directory_uri() . '/js/jquery-3.4.1.min.js');
     wp_enqueue_script('myscript', get_template_directory_uri() . '/js/bootstrap.bundle.min.js');
 }
 add_action('wp_enqueue_scripts', 'inputsjs');
+
+/**
+ * メインループの制御
+ */
+function exclude_category($query)
+{
+    if (is_admin() || !$query->is_main_query()) {
+        return;
+    }
+
+    //$query->set('posts_per_page', '1');
+    return;
+}
+add_action('pre_get_posts', 'exclude_category');
+
+/**
+ * 抜粋の制御
+ */
+function my_excerpt_length($length):int
+{
+    return 20;
+}
+add_filter('excerpt_length', 'my_excerpt_length');
