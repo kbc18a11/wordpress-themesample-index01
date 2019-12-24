@@ -1,5 +1,5 @@
 <?php
-
+add_theme_support('post-thumbnails');
 /**
  * CSSの読み込み
  */
@@ -34,10 +34,28 @@ function exclude_category($query)
 add_action('pre_get_posts', 'exclude_category');
 
 /**
- * 抜粋の制御
+ * 抜粋の文字列制御
  */
-function my_excerpt_length($length):int
+function my_excerpt_length($length): int
 {
     return 20;
 }
 add_filter('excerpt_length', 'my_excerpt_length');
+
+/**
+ * 抜粋の文字列制御
+ */
+function my_excerpt_more($length): string
+{
+    return ' ...';
+}
+add_filter('excerpt_more', 'my_excerpt_more');
+
+/**
+ * アイキャッチ画像の制御
+ */
+function twpp_setup_theme():void
+{
+ 
+}
+add_action('after_setup_theme', 'twpp_setup_theme');

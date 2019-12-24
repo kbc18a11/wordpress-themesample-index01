@@ -6,28 +6,35 @@
     $subRoopTargetCategorys = [
         'Hot News' => 3,
         'Feature Story' => 4,
-        'orderby' => 'date',
     ];
 
     foreach ($subRoopTargetCategorys as $key => $value) : ?>
         <?php
-            $args = [
-                'category_name' => $key,
-                'posts_per_page' => $value
-            ];
-            $my_query = new WP_Query($args);
+        $args = [
+            'category_name' => $key,
+            'posts_per_page' => $value
+        ];
+        $my_query = new WP_Query($args);
 
-            if ($my_query->have_posts()) :
-                ?>
+        if ($my_query->have_posts()) :
+        ?>
 
             <h1><?php echo $key ?></h1>
             <ul class="list-unstyled">
-                <?php while ($my_query->have_posts()) : $my_query->the_post();
-                            ?>
+                <?php
+                while ($my_query->have_posts()) : $my_query->the_post();
+                ?>
 
                     <li class="media">
                         <a class="d-flex thumbnail" href="#">
-                            <?php the_post_thumbnail('thumbnail'); ?>
+                            <?php
+                            if (has_post_thumbnail()) :
+                                the_post_thumbnail('thumbnail');
+                            else :
+                            ?>
+                                <img class="img-fluid" src="<?php echo get_template_directory_uri(); ?>/img/pose_dance_ukareru_woman.png" alt="" srcset="">
+                            <?php
+                            endif; ?>
                         </a>
                         <div class="media-body">
                             <h1>
@@ -47,12 +54,45 @@
                     </li>
 
                 <?php
-                        endwhile; ?>
+                endwhile; ?>
             </ul>
         <?php
-            endif;
-            ?>
+        endif;
+        ?>
     <?php endforeach; ?>
+
+    <?php //Contents 
+    ?>
+    <h1>Contents</h1>
+    <?php
+    $args = [
+        'posts_per_page' => 10,
+        'orderby' => 'date',
+        'paged' => $paged
+    ];
+    $my_query = new WP_Query($args);
+    if ($my_query->have_posts()) :
+
+        while ($my_query->have_posts()) : $my_query->the_post();
+    ?>
+            <div class="Contents">
+                <p><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></p>
+            </div>
+
+    <?php
+        endwhile;
+    endif;
+    if ($my_query->max_num_pages > 1) {
+        $args = [
+            'preve_text' => 'NEXT',
+            'next_text' => 'PREV',
+            'screen_reader_text' => '',
+            'show_all' => false,
+            'mid_size' => 2,
+        ];
+        the_posts_pagination($args);
+    }
+    ?>
 
 
 
