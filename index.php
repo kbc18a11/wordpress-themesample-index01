@@ -86,7 +86,7 @@
         $args = [
             'preve_text' => 'NEXT',
             'next_text' => 'PREV',
-            'screen_reader_text' => '',
+            'screen_reader_text' => ' ',
             'show_all' => false,
             'mid_size' => 2,
         ];
